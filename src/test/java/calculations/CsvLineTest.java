@@ -12,6 +12,7 @@ public class CsvLineTest {
         CsvLine line = new CsvLine("Hello;World");
 
         assertThat(line.get(0).toString(), is("Hello"));
+        assertThat(line.get(1).toString(), is("World"));
     }
 
     @Test
