@@ -24,7 +24,7 @@ public class FieldTest {
         Field field = Field.fromNumber(new BigDecimal("3.5"));
 
         assertThat(field.getAsNumber(), is(new BigDecimal("3.5")));
-        assertThat(field.toString(), is("3.5"));
+        assertThat(field.toString(), is("3,5"));
     }
 
     @Test

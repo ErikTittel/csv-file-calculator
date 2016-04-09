@@ -1,5 +1,6 @@
 package calculations;
 
+import static calculations.FileUtils.getPathToFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
@@ -8,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,8 +32,8 @@ public class CsvFileReaderWriterTest {
         List<CsvLine> csvLines = new CsvFileReaderWriter(path).readFromFile();
 
         assertThat(csvLines, iterableWithSize(2));
-        assertThat(csvLines.get(0).toString(), is("09.04.2016;Some Text;-3.5"));
-        assertThat(csvLines.get(1).toString(), is("10.04.2016;More Words;4.93"));
+        assertThat(csvLines.get(0).toString(), is("09.04.2016;Some Text;-3,5"));
+        assertThat(csvLines.get(1).toString(), is("10.04.2016;More Words;4,93"));
     }
 
     @Test
@@ -53,13 +53,4 @@ public class CsvFileReaderWriterTest {
         assertThat(lines.get(1), is("more;words"));
     }
 
-
-
-    private String getPathToFile(String filename) {
-        try {
-            return Paths.get(CsvFileReaderWriterTest.class.getResource(filename).toURI()).toAbsolutePath().toString();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

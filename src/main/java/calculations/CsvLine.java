@@ -13,9 +13,11 @@ class CsvLine {
 
     private List<Field> fields;
 
-    static CsvLine from(CsvLine line) {
+    static CsvLine emptyLine(int size) {
         CsvLine newLine = new CsvLine();
-        newLine.fields.addAll(line.fields);
+        for (int i = 0; i < size; i++) {
+            newLine.fields.add(Field.fromString("0"));
+        }
         return newLine;
     }
 
@@ -40,6 +42,10 @@ class CsvLine {
         fields.remove(updateFieldIndex);
         fields.add(updateFieldIndex, newField);
         return this;
+    }
+
+    int size() {
+        return fields.size();
     }
 
     @Override

@@ -38,7 +38,14 @@ class Field implements Comparable<Field> {
 
     @Override
     public String toString() {
+        if (isNumber()) {
+            return fieldText.replace('.', ',');
+        }
         return fieldText;
+    }
+
+    private boolean isNumber() {
+        return fieldText.matches("(\\+|-)?\\d+(\\.\\d+)?");
     }
 
     Field next(Order order) {

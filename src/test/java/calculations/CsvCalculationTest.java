@@ -22,7 +22,7 @@ public class CsvCalculationTest {
     public void result() {
         List<CsvLine> lines = new ArrayList<>();
 
-        CsvCalculation calculation = new CsvCalculation(lines);
+        CsvCalculation calculation = new CsvCalculation(lines, 0, 0, DESC);
 
         assertThat(calculation.getResult(), is(lines));
     }
@@ -37,7 +37,7 @@ public class CsvCalculationTest {
                 new CsvLine("c;5")
         );
 
-        CsvCalculation calculation = new CsvCalculation(lines).groupBy(0, 1);
+        CsvCalculation calculation = new CsvCalculation(lines, 0, 1, ASC).groupBy();
 
         List<String> result = calculation.getResult().stream()
                 .map(CsvLine::toString)
@@ -58,16 +58,16 @@ public class CsvCalculationTest {
                 new CsvLine("06.04.2016;d;q")
         );
 
-        CsvCalculation calculation = new CsvCalculation(lines).fill(0, ASC);
+        CsvCalculation calculation = new CsvCalculation(lines, 0, 1, ASC).fill();
 
         List<CsvLine> result = calculation.getResult();
         assertThat(result, iterableWithSize(7));
         assertThat(result.get(0).toString(), is("01.04.2016;a;x"));
-        assertThat(result.get(1).toString(), is("02.04.2016;a;x"));
+        assertThat(result.get(1).toString(), is("02.04.2016;0;0"));
         assertThat(result.get(2).toString(), is("03.04.2016;b;y"));
         assertThat(result.get(3).toString(), is("03.04.2016;c;z"));
-        assertThat(result.get(4).toString(), is("04.04.2016;c;z"));
-        assertThat(result.get(5).toString(), is("05.04.2016;c;z"));
+        assertThat(result.get(4).toString(), is("04.04.2016;0;0"));
+        assertThat(result.get(5).toString(), is("05.04.2016;0;0"));
         assertThat(result.get(6).toString(), is("06.04.2016;d;q"));
     }
 
@@ -80,16 +80,16 @@ public class CsvCalculationTest {
                 new CsvLine("01.04.2016;a;x")
         );
 
-        CsvCalculation calculation = new CsvCalculation(lines).fill(0, DESC);
+        CsvCalculation calculation = new CsvCalculation(lines, 0, 1, DESC).fill();
 
         List<CsvLine> result = calculation.getResult();
         assertThat(result, iterableWithSize(7));
         assertThat(result.get(0).toString(), is("06.04.2016;d;q"));
-        assertThat(result.get(1).toString(), is("05.04.2016;d;q"));
-        assertThat(result.get(2).toString(), is("04.04.2016;d;q"));
+        assertThat(result.get(1).toString(), is("05.04.2016;0;0"));
+        assertThat(result.get(2).toString(), is("04.04.2016;0;0"));
         assertThat(result.get(3).toString(), is("03.04.2016;c;z"));
         assertThat(result.get(4).toString(), is("03.04.2016;b;y"));
-        assertThat(result.get(5).toString(), is("02.04.2016;b;y"));
+        assertThat(result.get(5).toString(), is("02.04.2016;0;0"));
         assertThat(result.get(6).toString(), is("01.04.2016;a;x"));
     }
 
@@ -101,7 +101,7 @@ public class CsvCalculationTest {
                 new CsvLine("06.04.2016;d;q")
         );
 
-        CsvCalculation calculation = new CsvCalculation(lines).sort(0, DESC);
+        CsvCalculation calculation = new CsvCalculation(lines, 0, 1, DESC).sort();
 
         List<CsvLine> result = calculation.getResult();
         assertThat(result, iterableWithSize(3));
