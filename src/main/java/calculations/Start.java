@@ -1,5 +1,7 @@
 package calculations;
 
+import static calculations.Order.DESC;
+
 import java.util.List;
 
 public class Start {
@@ -10,8 +12,11 @@ public class Start {
 
         List<CsvLine> lines = readerWriter.readFromFile();
 
-        CsvCalculation csvCalculation = new CsvCalculation(lines);
-        List<CsvLine> newLines = csvCalculation.groupBy(0, 2).getResult();
+        List<CsvLine> newLines = new CsvCalculation(lines)
+                .fill(0, DESC)
+                .groupBy(0, 2)
+                .sort(0, DESC)
+                .getResult();
 
         readerWriter.writeToFile(newLines);
     }

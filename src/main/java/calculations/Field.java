@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-class Field {
+class Field implements Comparable<Field> {
 
     private static final String DATE_PATTERN = "dd.MM.yyyy";
 
@@ -39,5 +39,55 @@ class Field {
     @Override
     public String toString() {
         return fieldText;
+    }
+
+    Field next(Order order) {
+        switch (order) {
+            case ASC:
+                return increment();
+            case DESC:
+                return decrement();
+            default:
+                throw new RuntimeException("unknown order");
+        }
+    }
+
+    private Field increment() {
+        return fromDate(getAsDate().plusDays(1));
+    }
+
+    private Field decrement() {
+        return fromDate(getAsDate().minusDays(1));
+    }
+
+    boolean before(Field terminator, Order order) {
+        switch (order) {
+            case ASC:
+                return smallerThan(terminator);
+            case DESC:
+                return biggerThan(terminator);
+            default:
+                throw new RuntimeException("unknown order");
+        }
+    }
+
+    private boolean smallerThan(Field other) {
+        return getAsDate().isBefore(other.getAsDate());
+    }
+
+    private boolean biggerThan(Field other) {
+        return getAsDate().isAfter(other.getAsDate());
+    }
+
+    @Override
+    public int compareTo(Field other) {
+        if (isDate()) {
+            return getAsDate().compareTo(other.getAsDate());
+        }
+        return fieldText.compareTo(other.fieldText);
+    }
+
+    private boolean isDate() {
+        return fieldText.matches("\\d{2}\\.\\d{2}\\.\\d{4}");
     }
 }

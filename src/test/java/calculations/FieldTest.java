@@ -1,5 +1,7 @@
 package calculations;
 
+import static calculations.Order.ASC;
+import static calculations.Order.DESC;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -31,5 +33,35 @@ public class FieldTest {
 
         assertThat(field.getAsDate(), is(LocalDate.of(2016, 4, 9)));
         assertThat(field.toString(), is("09.04.2016"));
+    }
+
+    @Test
+    public void smallerThan() {
+        Field field1 = Field.fromString("01.04.2016");
+        Field field1_1 = Field.fromString("01.04.2016");
+        Field field2 = Field.fromString("02.04.2016");
+
+        assertThat(field1.before(field1_1, ASC), is(false));
+        assertThat(field1.before(field2, ASC), is(true));
+        assertThat(field2.before(field1, ASC), is(false));
+    }
+
+    @Test
+    public void greaterThan() {
+        Field field1 = Field.fromString("01.04.2016");
+        Field field1_1 = Field.fromString("01.04.2016");
+        Field field2 = Field.fromString("02.04.2016");
+
+        assertThat(field1.before(field1_1, DESC), is(false));
+        assertThat(field1.before(field2, DESC), is(false));
+        assertThat(field2.before(field1, DESC), is(true));
+    }
+
+    @Test
+    public void next() {
+        Field field = Field.fromString("01.04.2016");
+
+        assertThat(field.next(ASC).toString(), is("02.04.2016"));
+        assertThat(field.next(DESC).toString(), is("31.03.2016"));
     }
 }

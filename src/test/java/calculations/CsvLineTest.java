@@ -21,4 +21,13 @@ public class CsvLineTest {
 
         assertThat(line.toString(), is("Hello;World"));
     }
+
+    @Test
+    public void update() {
+        CsvLine line = new CsvLine("Hello;World");
+
+        line.update(1, Field.fromString("John"));
+
+        assertThat(line.toString(), is("Hello;John"));
+    }
 }
