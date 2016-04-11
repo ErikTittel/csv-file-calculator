@@ -29,7 +29,7 @@ public class CsvFileReaderWriterTest {
 
     @Test
     public void read() {
-        List<CsvLine> csvLines = new CsvFileReaderWriter(path).readFromFile();
+        List<CsvLine> csvLines = new CsvFileReaderWriter(path, "UTF-8").readFromFile();
 
         assertThat(csvLines, iterableWithSize(2));
         assertThat(csvLines.get(0).toString(), is("09.04.2016;Some Text;-3,5"));
@@ -43,7 +43,7 @@ public class CsvFileReaderWriterTest {
                 new CsvLine().field(Field.fromString("more")).field(Field.fromString("words"))
         );
 
-        new CsvFileReaderWriter(path).writeToFile(csvLines);
+        new CsvFileReaderWriter(path, "UTF-8").writeToFile(csvLines);
 
         Path resultPath = Paths.get(getPathToFile("/test-result.csv"));
         List<String> lines = Files.readAllLines(resultPath);

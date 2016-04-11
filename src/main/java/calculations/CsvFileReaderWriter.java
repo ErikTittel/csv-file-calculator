@@ -1,7 +1,5 @@
 package calculations;
 
-import static java.util.stream.Collectors.toList;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -9,12 +7,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 class CsvFileReaderWriter {
 
     private String filename;
+    private String encoding;
 
-    CsvFileReaderWriter(String filename) {
+    CsvFileReaderWriter(String filename, String encoding) {
         this.filename = filename;
+        this.encoding = encoding;
     }
 
     List<CsvLine> readFromFile() {
@@ -24,7 +26,7 @@ class CsvFileReaderWriter {
             System.out.println("File not found: " + filename);
         }
         try {
-            return Files.lines(path, Charset.forName("UTF-8")).skip(1).map(CsvLine::new).collect(toList());
+            return Files.lines(path, Charset.forName(encoding)).skip(1).map(CsvLine::new).collect(toList());
         } catch (IOException e) {
             throw new RuntimeException("Could not read file: " + filename, e);
         }
@@ -35,7 +37,7 @@ class CsvFileReaderWriter {
         Path outPath = Paths.get(outputFilename);
         List<String> textLines = lines.stream().map(CsvLine::toString).collect(toList());
         try {
-            Files.write(outPath, textLines, Charset.forName("UTF-8"));
+            Files.write(outPath, textLines, Charset.forName(encoding));
         } catch (IOException e) {
             throw new RuntimeException("Could not write to file: " + outputFilename, e);
         }

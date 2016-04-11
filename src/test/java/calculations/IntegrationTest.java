@@ -16,7 +16,7 @@ public class IntegrationTest {
     public void integration() throws IOException {
         String path = getPathToFile("/test2.csv");
 
-        Start.run(path, 1, 4);
+        Start.run(path, 1, 4, "UTF-8");
 
         String pathToExpectedFile = getPathToFile("/test2-result-expected.csv");
         String pathToActualFile = getPathToFile("/test2-result.csv");
