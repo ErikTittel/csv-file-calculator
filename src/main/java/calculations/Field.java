@@ -44,7 +44,7 @@ class Field implements Comparable<Field> {
         return fieldText;
     }
 
-    private boolean isNumber() {
+    boolean isNumber() {
         return fieldText.matches("(\\+|-)?\\d+(\\.\\d+)?");
     }
 
@@ -94,7 +94,7 @@ class Field implements Comparable<Field> {
         return fieldText.compareTo(other.fieldText);
     }
 
-    private boolean isDate() {
+    boolean isDate() {
         return fieldText.matches("\\d{2}\\.\\d{2}\\.\\d{4}");
     }
 }

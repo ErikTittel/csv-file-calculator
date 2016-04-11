@@ -10,13 +10,14 @@ import java.util.List;
 class CsvLine {
 
     private static final String FIELD_SEPARATOR = ";";
+    private static final String DEFAULT_FILLING_STRING = "0";
 
     private List<Field> fields;
 
     static CsvLine emptyLine(int size) {
         CsvLine newLine = new CsvLine();
         for (int i = 0; i < size; i++) {
-            newLine.fields.add(Field.fromString("0"));
+            newLine.fields.add(Field.fromString(DEFAULT_FILLING_STRING));
         }
         return newLine;
     }
