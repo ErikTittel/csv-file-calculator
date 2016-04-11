@@ -58,7 +58,8 @@ class Start {
         List<CsvLine> lines = readerWriter.readFromFile();
         checkFormat(lines, fillAndGroupColumnIndex, aggragationColumnIndex);
 
-        List<CsvLine> newLines = new CsvCalculation(lines, fillAndGroupColumnIndex, aggragationColumnIndex, DESC).fill()
+        List<CsvLine> newLines = new CsvCalculation(lines, fillAndGroupColumnIndex, aggragationColumnIndex, DESC)
+                .fill()
                 .groupBy()
                 .sort()
                 .getResult();
