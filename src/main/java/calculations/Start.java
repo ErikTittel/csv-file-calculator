@@ -67,7 +67,7 @@ class Start {
                 .groupBy()
                 .sort()
                 .continuousSubstract(startValue)
-                .average(90)
+                .average(2, 90)
                 .getResult();
 
         readerWriter.writeToFile(newLines);

@@ -83,16 +83,16 @@ class CsvCalculation {
         return this;
     }
 
-    CsvCalculation average(int maxCount) {
+    CsvCalculation average(int columnIndex, int maxCount) {
         int count = Math.min(lines.size(), maxCount);
         BigDecimal sum = lines.stream()
                 .limit(count)
-                .map(line -> line.get(2).getAsNumber())
+                .map(line -> line.get(columnIndex).getAsNumber())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal avg = sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP);
         lines.add(new CsvLine()
+                .field(Field.fromString("Avg first " + count + " rows"))
                 .field(Field.fromString(""))
-                .field(Field.fromString("Avg first " + count))
                 .field(Field.fromNumber(avg)));
         return this;
     }
