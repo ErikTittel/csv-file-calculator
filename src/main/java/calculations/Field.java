@@ -45,7 +45,7 @@ class Field implements Comparable<Field> {
     }
 
     boolean isNumber() {
-        return fieldText.matches("(\\+|-)?\\d+(\\.\\d+)?");
+        return fieldText.matches("(\\+|-)?\\d+((\\.|,)\\d+)?");
     }
 
     Field next(Order order) {
