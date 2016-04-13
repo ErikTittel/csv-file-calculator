@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -16,7 +17,7 @@ public class IntegrationTest {
     public void integration() throws IOException {
         String path = getPathToFile("/test2.csv");
 
-        Start.run(path, 1, 4, "UTF-8");
+        Start.run(path, 1, 4, BigDecimal.ZERO, "UTF-8");
 
         String pathToExpectedFile = getPathToFile("/test2-result-expected.csv");
         String pathToActualFile = getPathToFile("/test2-result.csv");

@@ -1,5 +1,6 @@
 package calculations;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static calculations.Order.DESC;
@@ -13,18 +14,19 @@ class Start {
         String filename = args[0];
         int fillAndGroupColumnIndex = Integer.valueOf(args[1]) - 1;
         int aggragationColumnIndex = Integer.valueOf(args[2]) - 1;
+        BigDecimal startValue = new BigDecimal(args[3].replaceAll(",", "."));
         String encoding;
-        if (args.length > 3) {
-            encoding = args[3];
+        if (args.length > 4) {
+            encoding = args[4];
         } else {
             encoding = "ISO-8859-1";
         }
 
-        run(filename, fillAndGroupColumnIndex, aggragationColumnIndex, encoding);
+        run(filename, fillAndGroupColumnIndex, aggragationColumnIndex, startValue, encoding);
     }
 
     private static boolean checkInput(String[] args) {
-        if (args.length < 3) {
+        if (args.length < 4) {
             System.out.println("Arguments missing.");
             printUsage();
             return false;
@@ -38,9 +40,10 @@ class Start {
     }
 
     private static void printUsage() {
-        System.out.println("Usage:\n\tjava -jar ./csvfilecalculator.jar [file] [date column] [number column] [encoding " + "" +
+        System.out.println("Usage:\n\tjava -jar ./csvfilecalculator.jar [file] [date column] [number column] [start " +
+                "value] [encoding " + "" +
                 "(optional)]");
-        System.out.println("Example:\n\tjava -jar ./csvfilecalculator.jar C:/path/to/your/file.csv 1 4 UTF-8");
+        System.out.println("Example:\n\tjava -jar ./csvfilecalculator.jar C:/path/to/your/file.csv 1 4 -123,45 UTF-8");
     }
 
     private static boolean isNumeric(String str) {
@@ -52,7 +55,8 @@ class Start {
         return true;
     }
 
-    static void run(String filename, int fillAndGroupColumnIndex, int aggragationColumnIndex, String encoding) {
+    static void run(String filename, int fillAndGroupColumnIndex, int aggragationColumnIndex, BigDecimal startValue, String
+            encoding) {
         CsvFileReaderWriter readerWriter = new CsvFileReaderWriter(filename, encoding);
 
         List<CsvLine> lines = readerWriter.readFromFile();
@@ -62,6 +66,8 @@ class Start {
                 .fill()
                 .groupBy()
                 .sort()
+                .continuousSubstract(startValue)
+                .average(90)
                 .getResult();
 
         readerWriter.writeToFile(newLines);

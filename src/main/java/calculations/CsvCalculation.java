@@ -1,12 +1,13 @@
 package calculations;
 
-import static java.util.stream.Collectors.groupingBy;
-
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.groupingBy;
 
 class CsvCalculation {
 
@@ -68,5 +69,31 @@ class CsvCalculation {
 
     List<CsvLine> getResult() {
         return lines;
+    }
+
+    CsvCalculation continuousSubstract(BigDecimal startValue) {
+        BigDecimal prevValue = startValue;
+        BigDecimal diff = BigDecimal.ZERO;
+        for(CsvLine line : lines) {
+            BigDecimal continuousValue = prevValue.subtract(diff);
+            line.field(Field.fromNumber(continuousValue));
+            prevValue = continuousValue;
+            diff = line.get(1).getAsNumber();
+        }
+        return this;
+    }
+
+    CsvCalculation average(int maxCount) {
+        int count = Math.min(lines.size(), maxCount);
+        BigDecimal sum = lines.stream()
+                .limit(count)
+                .map(line -> line.get(2).getAsNumber())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal avg = sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP);
+        lines.add(new CsvLine()
+                .field(Field.fromString(""))
+                .field(Field.fromString("Avg first " + count))
+                .field(Field.fromNumber(avg)));
+        return this;
     }
 }
